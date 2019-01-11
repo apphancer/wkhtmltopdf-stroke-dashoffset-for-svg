@@ -5,7 +5,6 @@ namespace Src;
 class SvgChart
 {
     private $score;
-    private $maxScore;
     private $unit;
     const UNITS = 566; // 566 units in circumference
 
@@ -19,16 +18,13 @@ class SvgChart
     {
         $dashArray = [0, 0, 0, 0];
 
-        if ($this->score < 25)
-        {
+        if ($this->score < 25) {
             $dashArray = $this->calculateFirstQuarter();
         }
-        if ($this->score >= 25 && $this->score < 50)
-        {
+        if ($this->score >= 25 && $this->score < 50) {
             $dashArray = $this->calculateSecondQuarter();
         }
-        if ($this->score >= 50 && $this->score <= 100)
-        {
+        if ($this->score >= 50 && $this->score <= 100) {
             $dashArray = $this->calculateSecondHalf();
         }
 
