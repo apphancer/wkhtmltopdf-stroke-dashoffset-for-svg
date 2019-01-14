@@ -5,26 +5,43 @@ namespace Src;
 class SvgChart
 {
     private $score;
+    private $maxScore;
     private $unit;
     const UNITS = 566; // 566 units in circumference
 
     public function __construct($score, $maxScore)
     {
         $this->score = $score;
+        $this->maxScore = $maxScore;
         $this->unit = self::UNITS / $maxScore;
+    }
+
+    private function oneQuarter()
+    {
+        return $this->maxScore / 4;
+    }
+
+    private function threeQuarters()
+    {
+        return $this->oneQuarter() * 3;
+    }
+
+    private function oneHalf()
+    {
+        return $this->maxScore / 2;
     }
 
     private function calculateArray() : array
     {
         $dashArray = [0, 0, 0, 0];
 
-        if ($this->score < 25) {
+        if ($this->score < $this->oneQuarter()) {
             $dashArray = $this->calculateFirstQuarter();
         }
-        if ($this->score >= 25 && $this->score < 50) {
+        if ($this->score >= $this->oneQuarter() && $this->score < $this->oneHalf()) {
             $dashArray = $this->calculateSecondQuarter();
         }
-        if ($this->score >= 50 && $this->score <= 100) {
+        if ($this->score >= $this->oneHalf() && $this->score <= $this->maxScore) {
             $dashArray = $this->calculateSecondHalf();
         }
 
@@ -35,7 +52,7 @@ class SvgChart
     {
         return [
             0,
-            75 * $this->unit,
+            $this->threeQuarters() * $this->unit,
             $this->score * $this->unit,
             0,
         ];
@@ -44,9 +61,9 @@ class SvgChart
     private function calculateSecondQuarter() : array
     {
         return [
-            (75 * $this->unit) - $this->g1(),
-            $this->g1(),
-            25 * $this->unit,
+            ($this->threeQuarters() * $this->unit) - $this->secondStroke(),
+            $this->secondStroke(),
+            $this->oneQuarter() * $this->unit,
             0,
         ];
     }
@@ -54,16 +71,16 @@ class SvgChart
     private function calculateSecondHalf() : array
     {
         return [
-            (75 * $this->unit) - $this->g1(),
-            $this->g1(),
+            ($this->threeQuarters() * $this->unit) - $this->secondStroke(),
+            $this->secondStroke(),
             0,
             0,
         ];
     }
 
-    private function g1()
+    private function secondStroke()
     {
-        return (100 - $this->score) * $this->unit;
+        return ($this->maxScore - $this->score) * $this->unit;
     }
 
     public function dashArray() : string

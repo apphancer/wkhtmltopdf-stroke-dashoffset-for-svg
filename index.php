@@ -4,7 +4,7 @@ use Src\SvgChart;
 
 require_once __DIR__ . '/src/SvgChart.php';
 
-$score = 75;
+$score = 25;
 $svgChart = new SvgChart($score, 100);
 
 var_dump($svgChart->dashArray());
